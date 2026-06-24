@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>배움365 — 배움은 나이를 멈추지 않습니다</title>
+<meta name="description" content="배움365는 시니어가 배움을 통해 삶의 활력을 되찾고, 사람들과 연결되며, 더 멋진 인생 2막을 시작할 수 있도록 돕는 평생학습 플랫폼입니다." />
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" />
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = {
+    theme: { extend: {
+      colors: { ink:'#050505','ink-2':'#0a0e14', navy:'#08284A','navy-2':'#0c365f','navy-deep':'#061c34', gold:'#C89A2B','gold-lt':'#E2BB55' },
+      fontFamily: { sans: ['Pretendard','system-ui','-apple-system','sans-serif'] },
+    }},
+  };
+</script>
+<style>
+  html { scroll-behavior: smooth; }
+  body { background:#050505; color:#f5f5f5; -webkit-font-smoothing:antialiased; }
+  .reveal { opacity:0; transform: translateY(28px); transition: opacity .8s ease, transform .8s ease; }
+  .reveal.in { opacity:1; transform:none; }
+  @keyframes spin-slow { to { transform: rotate(360deg); } }
+  .spin-slow { animation: spin-slow 60s linear infinite; }
+  ::selection { background:#C89A2B; color:#050505; }
+  .tag { position:absolute; transform:translate(-50%,-50%); white-space:nowrap; border-radius:9999px; border:1px solid rgba(200,154,43,.4); background:rgba(5,5,5,.8); backdrop-filter:blur(4px); padding:.5rem 1rem; font-size:.95rem; font-weight:600; color:#E2BB55; box-shadow:0 10px 25px -10px rgba(0,0,0,.6); }
+  @media (prefers-reduced-motion: reduce){
+    .reveal{opacity:1!important;transform:none!important;transition:none!important}
+    .spin-slow{animation:none}
+    html{scroll-behavior:auto}
+  }
+</style>
+</head>
+<body class="font-sans">
+
+<svg style="display:none" xmlns="http://www.w3.org/2000/svg">
+  <symbol id="emblem" viewBox="0 0 200 200">
+    <path d="M100 16 a84 84 0 0 1 0 168" fill="none" stroke="#0c365f" stroke-width="6" stroke-linecap="round"/>
+    <path d="M100 16 a84 84 0 0 0 0 168" fill="none" stroke="#C89A2B" stroke-width="6" stroke-linecap="round" stroke-dasharray="2 14"/>
+    <g stroke="#C89A2B" stroke-width="3.5" fill="none" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M58 150 L58 118 L86 90 L86 70"/><path d="M58 118 L44 104"/><path d="M86 90 L70 74"/><path d="M86 110 L106 90"/>
+    </g>
+    <g fill="#C89A2B">
+      <circle cx="58" cy="118" r="5"/><circle cx="86" cy="90" r="5"/><circle cx="86" cy="70" r="5"/>
+      <circle cx="44" cy="104" r="4.5"/><circle cx="70" cy="74" r="4.5"/><circle cx="106" cy="90" r="4.5"/>
+    </g>
+    <path d="M150 56 C176 96 168 150 118 156 C112 116 122 78 150 56 Z" fill="#08284A"/>
+    <g stroke="#E2BB55" stroke-width="2" fill="none" stroke-linecap="round" opacity="0.85">
+      <path d="M146 64 L122 150"/><path d="M137 92 L150 86"/><path d="M132 108 L147 102"/><path d="M128 124 L143 119"/>
+    </g>
+  </symbol>
+</svg>
+
+<header id="hdr" class="fixed top-0 inset-x-0 z-50 transition-all duration-300 bg-transparent">
+  <div class="mx-auto max-w-7xl px-5 md:px-8 h-20 flex items-center justify-between">
+    <a href="#top" class="flex items-center gap-2.5">
+      <svg class="w-[38px] h-[38px]"><use href="#emblem"/></svg>
+      <span class="text-2xl font-extrabold tracking-tight"><span class="text-white">배움</span><span class="text-gold">365</span></span>
+    </a>
+    <nav class="hidden lg:flex items-center gap-9">
+      <a href="#about" class="text-[17px] font-medium text-white/80 hover:text-gold transition-colors">배움365 소개</a>
+      <a href="#classes" class="text-[17px] font-medium text-white/80 hover:text-gold transition-colors">클래스</a>
+      <a href="#instructors" class="text-[17px] font-medium text-white/80 hover:text-gold transition-colors">강사진</a>
+      <a href="#community" class="text-[17px] font-medium text-white/80 hover:text-gold transition-colors">커뮤니티</a>
+      <a href="#consult" class="text-[17px] font-medium text-white/80 hover:text-gold transition-colors">신청하기</a>
+    </nav>
+    <a href="#consult" class="hidden lg:inline-flex items-center rounded-full bg-gold px-6 py-3 text-base font-bold text-ink transition-all duration-300 hover:bg-gold-lt hover:-translate-y-0.5">상담 신청하기</a>
+    <button id="navToggle" class="lg:hidden p-2 text-white" aria-label="메뉴">
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+    </button>
+  </div>
+  <div id="mobileMenu" class="hidden lg:hidden bg-ink/95 backdrop-blur-md border-t border-white/10 px-5 py-5 space-y-1">
+    <a href="#about" class="block py-3 text-lg font-medium text-white/85 hover:text-gold">배움365 소개</a>
+    <a href="#classes" class="block py-3 text-lg font-medium text-white/85 hover:text-gold">클래스</a>
+    <a href="#instructors" class="block py-3 text-lg font-medium text-white/85 hover:text-gold">강사진</a>
+    <a href="#community" class="block py-3 text-lg font-medium text-white/85 hover:text-gold">커뮤니티</a>
+    <a href="#consult" class="block py-3 text-lg font-medium text-white/85 hover:text-gold">신청하기</a>
+    <a href="#consult" class="block text-center mt-3 rounded-full bg-gold px-6 py-3 text-base font-bold text-ink">상담 신청하기</a>
+  </div>
+</header>
+
+<main>
+<section id="top" class="relative overflow-hidden pt-36 md:pt-44 pb-24">
+  <div class="absolute inset-0 -z-10" style="background:radial-gradient(1200px 600px at 15% -10%, #0c365f 0%, transparent 55%), radial-gradient(900px 500px at 100% 20%, rgba(200,154,43,0.10) 0%, transparent 50%), #050505"></div>
+  <div class="absolute inset-0 -z-10 opacity-[0.06]" style="background-image:linear-gradient(rgba(255,255,255,.5) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.5) 1px,transparent 1px);background-size:60px 60px"></div>
+  <div class="mx-auto max-w-7xl px-5 md:px-8 grid lg:grid-cols-[1.1fr_0.9fr] gap-14 items-center">
+    <div>
+      <div class="reveal inline-flex items-center gap-2 mb-5"><span class="h-px w-8 bg-gold/70"></span><span class="text-gold tracking-[0.2em] text-sm font-semibold uppercase">시니어 평생학습 플랫폼</span></div>
+      <h1 class="reveal text-4xl md:text-6xl font-extrabold leading-[1.18] tracking-tight">배움은 나이를<br>멈추지 <span class="text-gold">않습니다</span></h1>
+      <p class="reveal mt-7 text-xl md:text-2xl font-semibold text-white/90">새로운 배움, 새로운 사람, 새로운 가능성을 만나는 공간</p>
+      <p class="reveal mt-5 text-lg md:text-xl leading-relaxed text-white/65 max-w-xl">배움365는 시니어가 배움을 통해 삶의 활력을 되찾고, 사람들과 연결되며, 더 멋진 인생 2막을 시작할 수 있도록 돕는 평생학습 플랫폼입니다.</p>
+      <div class="reveal mt-9 flex flex-wrap gap-4">
+        <a href="#classes" class="inline-flex items-center justify-center rounded-full bg-gold px-7 py-3.5 text-base md:text-lg font-bold text-ink transition-all duration-300 hover:bg-gold-lt hover:-translate-y-0.5">클래스 둘러보기</a>
+        <a href="#consult" class="inline-flex items-center justify-center rounded-full border border-white/25 px-7 py-3.5 text-base md:text-lg font-semibold text-white transition-all duration-300 hover:border-gold hover:text-gold hover:-translate-y-0.5">상담 신청하기</a>
+      </div>
+    </div>
+    <div class="reveal relative">
+      <div class="relative mx-auto w-[320px] h-[320px] md:w-[420px] md:h-[420px]">
+        <div class="spin-slow absolute inset-0 rounded-full" style="background:conic-gradient(from 0deg, transparent, rgba(200,154,43,0.5), transparent 40%, rgba(12,54,95,0.6), transparent 75%)"></div>
+        <div class="absolute inset-[6px] rounded-full" style="background:radial-gradient(circle at 35% 30%, #0c365f 0%, #061c34 55%, #050505 100%)"></div>
+        <div class="absolute inset-0 grid place-items-center"><svg class="w-[190px] h-[190px]"><use href="#emblem"/></svg></div>
+        <span class="tag" style="left:50%;top:3%">AI</span>
+        <span class="tag" style="left:90.7%;top:26.5%">글쓰기</span>
+        <span class="tag" style="left:90.7%;top:73.5%">노래교실</span>
+        <span class="tag" style="left:50%;top:97%">스마트폰 활용</span>
+        <span class="tag" style="left:9.3%;top:73.5%">대화의 기술</span>
+        <span class="tag" style="left:9.3%;top:26.5%">인생 2막</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="py-16 border-y border-white/10 bg-navy-deep/40">
+  <div class="mx-auto max-w-7xl px-5 md:px-8">
+    <p class="reveal text-center text-white/55 text-base mb-10">배움365가 그려가는 목표입니다</p>
+    <div class="grid grid-cols-2 lg:grid-cols-4 gap-6">
+      <div class="reveal rounded-2xl border border-white/10 bg-white/[0.03] px-6 py-8 text-center transition-colors hover:border-gold/50"><div class="text-4xl md:text-5xl font-extrabold text-gold">100+</div><div class="mt-3 text-base md:text-lg text-white/70">준비 중인 클래스</div></div>
+      <div class="reveal rounded-2xl border border-white/10 bg-white/[0.03] px-6 py-8 text-center transition-colors hover:border-gold/50"><div class="text-4xl md:text-5xl font-extrabold text-gold">1,000+</div><div class="mt-3 text-base md:text-lg text-white/70">누적 참여 목표</div></div>
+      <div class="reveal rounded-2xl border border-white/10 bg-white/[0.03] px-6 py-8 text-center transition-colors hover:border-gold/50"><div class="text-4xl md:text-5xl font-extrabold text-gold">50+</div><div class="mt-3 text-base md:text-lg text-white/70">전문 강사진 목표</div></div>
+      <div class="reveal rounded-2xl border border-white/10 bg-white/[0.03] px-6 py-8 text-center transition-colors hover:border-gold/50"><div class="text-4xl md:text-5xl font-extrabold text-gold">95%</div><div class="mt-3 text-base md:text-lg text-white/70">만족도 목표</div></div>
+    </div>
+  </div>
+</section>
+
+<section id="about" class="py-24">
+  <div class="mx-auto max-w-7xl px-5 md:px-8">
+    <div class="reveal text-center mb-14">
+      <div class="inline-flex items-center gap-2 mb-5"><span class="h-px w-8 bg-gold/70"></span><span class="text-gold tracking-[0.2em] text-sm font-semibold">CLASS CATEGORY</span></div>
+      <h2 class="text-3xl md:text-5xl font-extrabold tracking-tight">다양한 배움의 기회가<br class="md:hidden"> 준비되어 있습니다</h2>
+    </div>
+    <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div class="reveal group h-full rounded-2xl border border-white/10 bg-gradient-to-b from-white/[0.05] to-transparent p-7 transition-all duration-300 hover:border-gold/60 hover:-translate-y-1.5">
+        <div class="w-14 h-14 rounded-xl grid place-items-center bg-gold/10 border border-gold/30"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#C89A2B" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="7" width="10" height="10" rx="2"/><path d="M10 3v3M14 3v3M10 18v3M14 18v3M3 10h3M3 14h3M18 10h3M18 14h3"/></svg></div>
+        <h3 class="mt-6 text-2xl font-bold">AI · 디지털</h3><p class="mt-3 text-lg leading-relaxed text-white/60">AI 첫걸음, ChatGPT 활용, 스마트폰 활용 등</p>
+      </div>
+      <div class="reveal group h-full rounded-2xl border border-white/10 bg-gradient-to-b from-white/[0.05] to-transparent p-7 transition-all duration-300 hover:border-gold/60 hover:-translate-y-1.5">
+        <div class="w-14 h-14 rounded-xl grid place-items-center bg-gold/10 border border-gold/30"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#C89A2B" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a8 8 0 0 1-11.3 7.3L4 20l.7-5.7A8 8 0 1 1 21 12z"/><path d="M9 11h6M9 14h4"/></svg></div>
+        <h3 class="mt-6 text-2xl font-bold">소통 · 인문</h3><p class="mt-3 text-lg leading-relaxed text-white/60">대화의 기술, 글쓰기, 독서 모임 등</p>
+      </div>
+      <div class="reveal group h-full rounded-2xl border border-white/10 bg-gradient-to-b from-white/[0.05] to-transparent p-7 transition-all duration-300 hover:border-gold/60 hover:-translate-y-1.5">
+        <div class="w-14 h-14 rounded-xl grid place-items-center bg-gold/10 border border-gold/30"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#C89A2B" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V6l11-2v12"/><circle cx="6" cy="18" r="3"/><circle cx="17" cy="16" r="3"/></svg></div>
+        <h3 class="mt-6 text-2xl font-bold">취미 · 문화</h3><p class="mt-3 text-lg leading-relaxed text-white/60">노래교실, 사진, 여행 이야기 등</p>
+      </div>
+      <div class="reveal group h-full rounded-2xl border border-white/10 bg-gradient-to-b from-white/[0.05] to-transparent p-7 transition-all duration-300 hover:border-gold/60 hover:-translate-y-1.5">
+        <div class="w-14 h-14 rounded-xl grid place-items-center bg-gold/10 border border-gold/30"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#C89A2B" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20.8 6.6a5 5 0 0 0-7.1 0L12 8.3l-1.7-1.7a5 5 0 1 0-7.1 7.1L12 22l8.8-8.3a5 5 0 0 0 0-7.1z"/></svg></div>
+        <h3 class="mt-6 text-2xl font-bold">건강 · 라이프</h3><p class="mt-3 text-lg leading-relaxed text-white/60">건강 습관, 운동, 인생 2막 설계 등</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="classes" class="py-24 bg-navy-deep/30 border-y border-white/10">
+  <div class="mx-auto max-w-7xl px-5 md:px-8">
+    <div class="reveal text-center mb-14">
+      <div class="inline-flex items-center gap-2 mb-5"><span class="h-px w-8 bg-gold/70"></span><span class="text-gold tracking-[0.2em] text-sm font-semibold">FEATURED CLASS</span></div>
+      <h2 class="text-3xl md:text-5xl font-extrabold tracking-tight">지금 주목할 클래스</h2>
+    </div>
+    <div id="classGrid" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+  </div>
+</section>
+
+<section id="community" class="py-24">
+  <div class="mx-auto max-w-7xl px-5 md:px-8 grid lg:grid-cols-[0.9fr_1.1fr] gap-14 items-center">
+    <div class="reveal">
+      <div class="inline-flex items-center gap-2 mb-5"><span class="h-px w-8 bg-gold/70"></span><span class="text-gold tracking-[0.2em] text-sm font-semibold">COMMUNITY</span></div>
+      <h2 class="text-3xl md:text-5xl font-extrabold tracking-tight leading-tight">함께 배우고<br>서로 응원합니다</h2>
+      <p class="mt-6 text-lg md:text-xl leading-relaxed text-white/65">배움365는 지식을 전달하는 곳을 넘어, 함께 배우고 이야기하며 성장하는 커뮤니티를 지향합니다.</p>
+      <a href="#consult" class="mt-8 inline-flex items-center rounded-full bg-gold px-7 py-3.5 text-base md:text-lg font-bold text-ink transition-all duration-300 hover:bg-gold-lt hover:-translate-y-0.5">커뮤니티 함께하기</a>
+    </div>
+    <div id="commGrid" class="grid sm:grid-cols-2 gap-5"></div>
+  </div>
+</section>
+
+<section id="instructors" class="py-24 bg-navy-deep/30 border-y border-white/10">
+  <div class="mx-auto max-w-7xl px-5 md:px-8">
+    <div class="reveal text-center mb-14">
+      <div class="inline-flex items-center gap-2 mb-5"><span class="h-px w-8 bg-gold/70"></span><span class="text-gold tracking-[0.2em] text-sm font-semibold">INSTRUCTORS</span></div>
+      <h2 class="text-3xl md:text-5xl font-extrabold tracking-tight">전문성과 진심을 가진<br class="md:hidden"> 강사진이 함께합니다</h2>
+    </div>
+    <div id="instGrid" class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6"></div>
+  </div>
+</section>
+
+<section class="py-24">
+  <div class="mx-auto max-w-7xl px-5 md:px-8">
+    <div class="reveal text-center mb-14">
+      <div class="inline-flex items-center gap-2 mb-5"><span class="h-px w-8 bg-gold/70"></span><span class="text-gold tracking-[0.2em] text-sm font-semibold">VOICES</span></div>
+      <h2 class="text-3xl md:text-5xl font-extrabold tracking-tight">배움을 통해 삶이<br class="md:hidden"> 다시 움직입니다</h2>
+    </div>
+    <div id="reviewGrid" class="grid md:grid-cols-3 gap-6"></div>
+  </div>
+</section>
+
+<section id="consult" class="py-28 relative overflow-hidden">
+  <div class="absolute inset-0 -z-10" style="background:radial-gradient(900px 400px at 50% 0%, #0c365f 0%, transparent 60%), #050505"></div>
+  <div class="mx-auto max-w-4xl px-5 md:px-8 text-center reveal">
+    <div class="flex justify-center mb-8"><svg class="w-[72px] h-[72px]"><use href="#emblem"/></svg></div>
+    <h2 class="text-3xl md:text-5xl font-extrabold tracking-tight leading-tight">지금, 새로운 배움을<br>시작해보세요</h2>
+    <p class="mt-6 text-lg md:text-xl text-white/70">배움365가 당신의 빛나는 인생 2막을 함께 만들어갑니다.</p>
+    <div class="mt-10 flex flex-wrap justify-center gap-4">
+      <a href="#consult" class="inline-flex items-center justify-center rounded-full bg-gold px-7 py-3.5 text-base md:text-lg font-bold text-ink transition-all duration-300 hover:bg-gold-lt hover:-translate-y-0.5">상담 신청하기</a>
+      <a href="#classes" class="inline-flex items-center justify-center rounded-full border border-white/25 px-7 py-3.5 text-base md:text-lg font-semibold text-white transition-all duration-300 hover:border-gold hover:text-gold hover:-translate-y-0.5">클래스 둘러보기</a>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer class="border-t border-white/10 bg-ink pt-16 pb-10">
+  <div class="mx-auto max-w-7xl px-5 md:px-8">
+    <div class="grid md:grid-cols-[1.4fr_1fr_1fr_1fr] gap-10">
+      <div>
+        <div class="flex items-center gap-2.5"><svg class="w-10 h-10"><use href="#emblem"/></svg><span class="text-2xl font-extrabold tracking-tight"><span class="text-white">배움</span><span class="text-gold">365</span></span></div>
+        <p class="mt-4 text-base text-white/55 leading-relaxed max-w-xs">배움은 나이를 멈추지 않습니다.<br>시니어를 위한 프리미엄 평생학습 플랫폼.</p>
+        <a href="https://baeum365.com" class="mt-4 inline-block text-gold font-semibold">baeum365.com</a>
+      </div>
+      <div><h4 class="font-bold text-white/90 mb-4">배움365</h4><ul class="space-y-2.5"><li><a href="#about" class="text-base text-white/55 hover:text-gold">배움365 소개</a></li><li><a href="#classes" class="text-base text-white/55 hover:text-gold">클래스</a></li><li><a href="#instructors" class="text-base text-white/55 hover:text-gold">강사진</a></li><li><a href="#community" class="text-base text-white/55 hover:text-gold">커뮤니티</a></li></ul></div>
+      <div><h4 class="font-bold text-white/90 mb-4">문의</h4><ul class="space-y-2.5"><li><a href="#consult" class="text-base text-white/55 hover:text-gold">클래스 문의</a></li><li><a href="#consult" class="text-base text-white/55 hover:text-gold">제휴 문의</a></li><li><a href="#consult" class="text-base text-white/55 hover:text-gold">강사 지원</a></li></ul></div>
+      <div><h4 class="font-bold text-white/90 mb-4">정책</h4><ul class="space-y-2.5"><li><a href="#" class="text-base text-white/55 hover:text-gold">개인정보처리방침</a></li><li><a href="#" class="text-base text-white/55 hover:text-gold">이용약관</a></li></ul></div>
+    </div>
+    <div class="mt-12 pt-6 border-t border-white/10 text-center text-sm text-white/40">Copyright © BAEUM365. All rights reserved.</div>
+  </div>
+</footer>
+
+<script>
+  const CLASSES = [
+    ["AI 첫걸음 클래스","스마트폰으로 AI와 첫 대화를 나눠봅니다.","입문","4주"],
+    ["ChatGPT 활용 클래스","일상과 취미에 AI를 똑똑하게 활용해요.","입문","4주"],
+    ["마음을 쓰는 글쓰기","내 인생의 이야기를 글로 남겨봅니다.","초급","6주"],
+    ["대화의 기술","관계를 여는 따뜻한 대화법을 배워요.","입문","4주"],
+    ["신나는 노래교실","함께 부르며 활력을 되찾는 시간입니다.","입문","상시"],
+    ["스마트폰 완전 정복","사진, 카톡, 결제까지 한 번에 익혀요.","입문","4주"],
+  ];
+  const COMMUNITY = [
+    ["소규모 클래스","한 분 한 분에게 집중하는 적은 인원의 수업"],
+    ["또래와의 교류","같은 시대를 살아온 분들과 나누는 이야기"],
+    ["활동 사진과 후기","함께한 순간을 기록하고 나누는 공간"],
+    ["인생 2막 네트워크","배움을 넘어 이어지는 새로운 관계"],
+  ];
+  const INSTRUCTORS = [
+    ["신중현 대표","AI 첫걸음 클래스",["IT 엔지니어 경력","프로젝트 매니저(PM)","AI 챗봇 서비스 경험"]],
+    ["글쓰기 전문 강사","글쓰기 · 자서전",["에세이 글쓰기","자서전 쓰기","삶의 이야기 정리"]],
+    ["소통 전문 강사","대화의 기술",["대화의 기술","관계 회복","커뮤니케이션 코칭"]],
+  ];
+  const REVIEWS = [
+    ["컴퓨터는 무조건 어렵다고만 생각했는데, 천천히 알려주셔서 이제 손주에게 영상통화도 먼저 걸어요.","김O순 님","68세 · AI 첫걸음"],
+    ["혼자 있는 시간이 많았는데, 같이 배우는 분들과 이야기 나누는 게 하루 중 가장 큰 즐거움이 됐습니다.","박O호 님","72세 · 노래교실"],
+    ["글쓰기 수업에서 제 인생을 글로 정리하면서, 지나온 시간이 참 소중하게 느껴졌어요.","이O자 님","75세 · 글쓰기"],
+  ];
+  const emblem = '<svg class="w-full h-full"><use href="#emblem"/></svg>';
+
+  document.getElementById('classGrid').innerHTML = CLASSES.map(([n,d,l,w]) => `
+    <div class="reveal group h-full rounded-2xl border border-white/10 bg-white/[0.03] overflow-hidden transition-all duration-300 hover:border-gold/60 hover:-translate-y-1.5">
+      <div class="relative h-40 overflow-hidden" style="background:linear-gradient(135deg,#08284A 0%,#0c365f 60%,#050505 100%)">
+        <div class="absolute -right-6 -top-6 w-[140px] h-[140px] opacity-25 group-hover:opacity-40 transition-opacity">${emblem}</div>
+        <span class="absolute left-4 bottom-4 rounded-full bg-gold/90 text-ink text-sm font-bold px-3 py-1">${l}</span>
+      </div>
+      <div class="p-6">
+        <h3 class="text-xl font-bold">${n}</h3>
+        <p class="mt-2.5 text-base leading-relaxed text-white/60">${d}</p>
+        <div class="mt-5 flex items-center justify-between text-sm text-white/50 border-t border-white/10 pt-4"><span>난이도 · ${l}</span><span>기간 · ${w}</span></div>
+      </div>
+    </div>`).join('');
+
+  document.getElementById('commGrid').innerHTML = COMMUNITY.map(([t,d],i) => `
+    <div class="reveal h-full rounded-2xl border border-white/10 bg-white/[0.03] p-6 transition-colors hover:border-gold/50">
+      <div class="w-10 h-10 rounded-lg bg-gold/15 grid place-items-center text-gold font-extrabold text-lg">${i+1}</div>
+      <h3 class="mt-4 text-xl font-bold">${t}</h3>
+      <p class="mt-2 text-base leading-relaxed text-white/60">${d}</p>
+    </div>`).join('');
+
+  document.getElementById('instGrid').innerHTML = INSTRUCTORS.map(([n,r,pts]) => `
+    <div class="reveal h-full rounded-2xl border border-white/10 bg-white/[0.03] p-7 transition-all duration-300 hover:border-gold/60 hover:-translate-y-1.5">
+      <div class="w-20 h-20 rounded-full grid place-items-center mb-5 p-3" style="background:linear-gradient(135deg,#0c365f,#08284A)">${emblem}</div>
+      <h3 class="text-xl font-bold">${n}</h3>
+      <p class="text-gold mt-1 font-semibold">${r}</p>
+      <ul class="mt-4 space-y-2">${pts.map(p=>`<li class="flex items-start gap-2 text-base text-white/65"><span class="mt-2 h-1.5 w-1.5 rounded-full bg-gold shrink-0"></span>${p}</li>`).join('')}</ul>
+    </div>`).join('') + `
+    <div class="reveal h-full rounded-2xl border border-dashed border-gold/40 bg-gold/[0.04] p-7 flex flex-col justify-center text-center transition-colors hover:bg-gold/[0.08]">
+      <h3 class="text-xl font-bold">함께할 강사를<br>모십니다</h3>
+      <p class="mt-3 text-base text-white/60">시니어의 인생 2막을<br>함께 만들어가요.</p>
+      <a href="#consult" class="mt-5 inline-flex items-center justify-center rounded-full border border-gold px-5 py-2.5 text-base font-bold text-gold hover:bg-gold hover:text-ink transition-colors">강사 지원하기</a>
+    </div>`;
+
+  document.getElementById('reviewGrid').innerHTML = REVIEWS.map(([t,w,a]) => `
+    <figure class="reveal h-full rounded-2xl border border-white/10 bg-gradient-to-b from-white/[0.05] to-transparent p-8">
+      <div class="text-gold text-5xl leading-none">“</div>
+      <blockquote class="mt-2 text-lg leading-relaxed text-white/85">${t}</blockquote>
+      <figcaption class="mt-6 pt-5 border-t border-white/10"><div class="font-bold">${w}</div><div class="text-sm text-white/50 mt-0.5">${a}</div></figcaption>
+    </figure>`).join('');
+
+  const io = new IntersectionObserver((es)=>es.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target);} }), {threshold:0.12});
+  document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+
+  const hdr = document.getElementById('hdr');
+  function onScroll(){
+    const on = window.scrollY > 20;
+    hdr.classList.toggle('bg-ink/85', on);
+    hdr.classList.toggle('backdrop-blur-md', on);
+    hdr.classList.toggle('border-b', on);
+    hdr.classList.toggle('border-white/10', on);
+  }
+  window.addEventListener('scroll', onScroll); onScroll();
+
+  const menu = document.getElementById('mobileMenu');
+  document.getElementById('navToggle').addEventListener('click', ()=>menu.classList.toggle('hidden'));
+  menu.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>menu.classList.add('hidden')));
+</script>
+</body>
+</html>
